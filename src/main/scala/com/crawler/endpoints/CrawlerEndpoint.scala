@@ -14,7 +14,7 @@ private final class CrawlerEndpoint[F[_]: Async](crawler: CrawlerService[F]) {
   implicit val listUrlQueryParamDecoder: QueryParamDecoder[List[String]] =
     QueryParamDecoder[String].map(str => str.split(",").toList)
 
-  private object UrlQueryParamMatcher extends QueryParamDecoderMatcher[List[String]]("url")
+  private object UrlQueryParamMatcher extends QueryParamDecoderMatcher[List[String]]("urls")
 
   private val titleByUrls = HttpRoutes.of[F] { case GET -> Root / "crawler" :? UrlQueryParamMatcher(urls) =>
     Ok(crawler.parseTitleFromUrl(urls).asJson.noSpaces)
